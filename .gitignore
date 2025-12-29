@@ -1,0 +1,18 @@
+# Configuration with sensitive data
+config.php
+
+# Test and setup files
+test_db.php
+setup_database.php
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+

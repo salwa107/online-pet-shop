@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "name": "Premium Chicken Dry Food",
+    "category": "food",
+    "price": 29.99,
+    "oldPrice": 39.99,
+    "emoji": "🍗",
+    "badge": "Best Seller"
+  },
+  {
+    "id": 2,
+    "name": "Interactive Ball Toy",
+    "category": "toys",
+    "price": 12.99,
+    "oldPrice": null,
+    "emoji": "🎾",
+    "badge": null
+  },
+  {
+    "id": 3,
+    "name": "Cozy Pet Bed",
+    "category": "beds",
+    "price": 49.99,
+    "oldPrice": 69.99,
+    "emoji": "🛏️",
+    "badge": "30% Off"
+  },
+  {
+    "id": 4,
+    "name": "Stylish Collar Set",
+    "category": "accessories",
+    "price": 18.99,
+    "oldPrice": null,
+    "emoji": "🎀",
+    "badge": "New"
+  },
+  {
+    "id": 5,
+    "name": "Salmon Recipe Food",
+    "category": "food",
+    "price": 34.99,
+    "oldPrice": 44.99,
+    "emoji": "🐟",
+    "badge": null
+  },
+  {
+    "id": 6,
+    "name": "Squeaky Plush Toy",
+    "category": "toys",
+    "price": 9.99,
+    "oldPrice": 14.99,
+    "emoji": "🧸",
+    "badge": "Popular"
+  },
+  {
+    "id": 7,
+    "name": "Grooming Brush Kit",
+    "category": "grooming",
+    "price": 24.99,
+    "oldPrice": null,
+    "emoji": "✨",
+    "badge": null
+  },
+  {
+    "id": 8,
+    "name": "Beef & Veggie Mix",
+    "category": "food",
+    "price": 27.99,
+    "oldPrice": null,
+    "emoji": "🥩",
+    "badge": null
+  }
+]

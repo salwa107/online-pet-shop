@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawParadise - Pet Shop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawParadise</span>
+            </div>
+            <!-- Main Navigation -->
+            <nav class="main-nav">
+                <a href="#" class="nav-link active">Home</a>
+                <a href="#products" class="nav-link">Shop</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#favorites" class="nav-link">Favorites</a>
+            </nav>
+            <!-- Header Action Buttons -->
+            <div class="header-actions">
+                <!-- Auth Buttons (shown when logged out) -->
+                <div id="authButtons">
+                    <button class="btn btn-small" id="loginBtn">Login</button>
+                    <button class="btn btn-small btn-primary" id="signupBtn">Sign Up</button>
+                </div>
+                <!-- User Info (shown when logged in) -->
+                <div id="userInfo" style="display: none;">
+                    <span class="user-greeting">👋 <span id="userName"></span></span>
+                    <button class="btn btn-small" id="logoutBtn">Logout</button>
+                </div>
+                <button class="icon-btn" id="searchBtn">🔍</button>
+                <button class="icon-btn fav-btn" id="favoritesBtn">
+                    ❤️
+                    <span class="fav-count" id="favCount">0</span>
+                </button>
+                <button class="icon-btn cart-btn" id="cartBtn">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Products Quick Navigation -->
+        <div class="products-nav">
+            <div class="products-nav-inner">
+                <a href="#products" class="product-category" data-category="all">
+                    <span class="category-icon">🏠</span>
+                    <span>All Products</span>
+                </a>
+                <a href="#products" class="product-category" data-category="food">
+                    <span class="category-icon">🍖</span>
+                    <span>Dry Food</span>
+                </a>
+                <a href="#products" class="product-category" data-category="toys">
+                    <span class="category-icon">🎾</span>
+                    <span>Toys</span>
+                </a>
+                <a href="#products" class="product-category" data-category="accessories">
+                    <span class="category-icon">🎀</span>
+                    <span>Accessories</span>
+                </a>
+                <a href="#products" class="product-category" data-category="beds">
+                    <span class="category-icon">🛏️</span>
+                    <span>Beds & Houses</span>
+                </a>
+                <a href="#products" class="product-category" data-category="grooming">
+                    <span class="category-icon">✨</span>
+                    <span>Grooming</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <input type="text" placeholder="Search for products..." class="search-input" id="searchInput">
+            <button class="close-search" id="closeSearchBtn">✕</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal auth-modal">
+            <div class="modal-header">
+                <h2>🔐 Login</h2>
+                <button class="close-modal" data-close="loginModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" id="switchToSignup">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal auth-modal">
+            <div class="modal-header">
+                <h2>📝 Sign Up</h2>
+                <button class="close-modal" data-close="signupModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signupPassword" placeholder="At least 6 characters" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>🛒 Your Cart</h2>
+                <button class="close-modal" data-close="cartModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items will be loaded -->
+                </div>
+                <div class="cart-empty" id="cartEmpty">
+                    <span class="empty-icon">🛒</span>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            <div class="cart-footer" id="cartFooter">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">$0.00</span>
+                </div>
+                <button class="btn btn-primary" id="checkoutBtn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal checkout-modal">
+            <div class="modal-header">
+                <h2>💳 Payment</h2>
+                <button class="close-modal" data-close="checkoutModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm">
+                    <!-- Payment Method Selection -->
+                    <div class="payment-method-section">
+                        <label class="section-label">Choose Payment Method</label>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="card" checked>
+                                <div class="option-content">
+                                    <span class="option-icon">💳</span>
+                                    <div class="option-text">
+                                        <span class="option-title">Credit Card</span>
+                                        <span class="option-desc">Pay securely with your card</span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="cod">
+                                <div class="option-content">
+                                    <span class="option-icon">🚚</span>
+                                    <div class="option-text">
+                                        <span class="option-title">Pay on Delivery</span>
+                                        <span class="option-desc">Cash when you receive</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Details -->
+                    <div id="cardDetails">
+                        <div class="form-section-title">📦 Shipping Address</div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="cardShipName" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="cardShipPhone" placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Address</label>
+                            <input type="text" id="cardShipAddress" placeholder="123 Pet Street, City, ZIP">
+                        </div>
+
+                        <div class="form-section-title">💳 Card Information</div>
+                        <div class="form-group">
+                            <label>Cardholder Name</label>
+                            <input type="text" id="cardName" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <span class="input-hint" id="cardHint">Enter 16 digits</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" id="cardCvv" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COD Details -->
+                    <div id="codDetails" style="display: none;">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="codName" placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="codPhone" placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Delivery Address</label>
+                            <input type="text" id="codAddress" placeholder="123 Pet Street, City, ZIP">
+                        </div>
+                        <div class="cod-notice">
+                            <span>📦</span>
+                            <p>Pay with cash when your order arrives. Please have the exact amount ready.</p>
+                        </div>
+                    </div>
+
+                    <div class="checkout-summary">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="checkoutSubtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span>Free</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">$0.00</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="payButton">Pay Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Favorites Panel -->
+    <div class="modal-overlay" id="favoritesModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>❤️ Favorites</h2>
+                <button class="close-modal" data-close="favoritesModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="favorites-items" id="favoritesItems"></div>
+                <div class="favorites-empty" id="favoritesEmpty">
+                    <span class="empty-icon">❤️</span>
+                    <p>No favorites yet</p>
+                    <p class="empty-hint">Click the heart on products to add them here!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Everything Your Pet
+                <span class="highlight">Dreams Of</span>
+            </h1>
+            <p class="hero-subtitle">Premium quality products for your furry, feathered, and scaly friends. Because they deserve the best!</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="shopNowBtn">Shop Now</button>
+                <button class="btn btn-secondary" id="learnMoreBtn">Learn More</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card card-1">🐕 Dogs</div>
+            <div class="floating-card card-2">🐈 Cats</div>
+            <div class="floating-card card-3">🐹 Small Pets</div>
+            <div class="pet-circle">
+                <span class="big-emoji">🐾</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="feature">
+            <span class="feature-icon">🚚</span>
+            <h3>Free Shipping</h3>
+            <p>On orders over $50</p>
+        </div>
+        <div class="feature">
+            <span class="feature-icon">💯</span>
+            <h3>Quality Guaranteed</h3>
+            <p>Premium pet products</p>
+        </div>
+        <div class="feature">
+            <span class="feature-icon">🔄</span>
+            <h3>Easy Returns</h3>
+            <p>30-day return policy</p>
+        </div>
+        <div class="feature">
+            <span class="feature-icon">💬</span>
+            <h3>24/7 Support</h3>
+            <p>Always here to help</p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="section-header">
+            <h2 class="section-title">Featured Products</h2>
+            <p class="section-subtitle">Handpicked favorites for your beloved companions</p>
+        </div>
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section class="favorites-section" id="favorites">
+        <div class="section-header">
+            <h2 class="section-title">❤️ Your Favorites</h2>
+            <p class="section-subtitle">Products you love, all in one place</p>
+        </div>
+        <div class="favorites-grid" id="favoritesGrid">
+            <div class="favorites-placeholder" id="favoritesPlaceholder">
+                <span class="placeholder-icon">❤️</span>
+                <p>Your favorite products will appear here</p>
+                <p class="placeholder-hint">Click the heart icon on any product to add it to your favorites!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="section-header">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Got questions? We've got answers!</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What payment methods do you accept?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>We accept all major credit cards including Visa, MasterCard, American Express, and Discover. All payments are securely processed with 256-bit encryption.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How long does shipping take?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Standard shipping takes 3-5 business days. Express shipping (1-2 days) is available for an additional fee. Free shipping on all orders over $50!</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What is your return policy?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>We offer a 30-day hassle-free return policy. If you're not satisfied with your purchase, simply return it in its original packaging for a full refund.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Are your products safe for pets?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely! All our products are carefully selected and tested to ensure they meet the highest safety standards.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Do you offer discounts for bulk orders?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! We offer special discounts for bulk orders. Contact our customer support team at support@pawparadise.com for customized pricing.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How can I track my order?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Once your order ships, you'll receive an email with a tracking number to track your package in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Join Our Pack!</h2>
+            <p>Subscribe for exclusive deals and pet care tips</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer / About Section -->
+    <footer class="footer" id="about">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawParadise</span>
+                <p>Your one-stop shop for all pet needs. Quality products, happy pets! Founded in 2020, we've been serving pet lovers worldwide with premium products and exceptional service.</p>
+                <div class="contact-info">
+                    <p>📍 123 Pet Street, Animal City, AC 12345</p>
+                    <p>📞 +1 (555) 123-4567</p>
+                    <p>✉️ contact@pawparadise.com</p>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="#products">Shop Products</a>
+                <a href="#favorites">My Favorites</a>
+                <a href="#faq">FAQ</a>
+                <a href="#about">About Us</a>
+            </div>
+            <div class="footer-links">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" title="Facebook">
+                        <span class="social-icon">📘</span>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="#" title="Instagram">
+                        <span class="social-icon">📷</span>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="#" title="Twitter">
+                        <span class="social-icon">🐦</span>
+                        <span>Twitter</span>
+                    </a>
+                    <a href="#" title="YouTube">
+                        <span class="social-icon">📺</span>
+                        <span>YouTube</span>
+                    </a>
+                </div>
+                <div class="business-hours">
+                    <h4>Business Hours</h4>
+                    <p>Mon - Fri: 9:00 AM - 8:00 PM</p>
+                    <p>Sat - Sun: 10:00 AM - 6:00 PM</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 PawParadise. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage">Item added to cart!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

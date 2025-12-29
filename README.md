@@ -125,7 +125,7 @@ pawparadise/
 
 | Name | GitHub |
 |------|--------|
-| **Salwa** | [@salwa107](https://github.com/salwa107) |
+| **Salwa Nasser** | [@salwa107](https://github.com/salwa107) |
 | **Sarah Ahmed** | [@Saror1206](https://github.com/Saror1206) |
 
 - Course: CNC111 - Web Programming

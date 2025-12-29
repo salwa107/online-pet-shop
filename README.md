@@ -121,10 +121,13 @@ pawparadise/
 | `/check_session.php` | GET | Check login status |
 | `/submit_order.php` | POST | Submit order |
 
-## 👨‍💻 Author
+## 👥 Team
 
-**salwa107**
-- GitHub: [@salwa107](https://github.com/salwa107)
+| Name | GitHub |
+|------|--------|
+| **Salwa** | [@salwa107](https://github.com/salwa107) |
+| **Sarah Ahmed** | [@Saror1206](https://github.com/Saror1206) |
+
 - Course: CNC111 - Web Programming
 
 ## 📄 License
